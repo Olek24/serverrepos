@@ -1,5 +1,5 @@
 # Start from the code-server Debian base image
-FROM codercom/code-server:3.10.2
+FROM codercom/code-server:3.12.0
 
 USER coder
 
@@ -19,16 +19,21 @@ COPY deploy-container/rclone-tasks.json /tmp/rclone-tasks.json
 # Fix permissions for code-server
 RUN sudo chown -R coder:coder /home/coder/.local
 
-# You can add custom software and dependencies for your environment below
+# You can add custom software and dependencies for your environment here. Some examples:
+
+# RUN code-server --install-extension esbenp.prettier-vscode
+# RUN sudo apt-get install -y build-essential
+# RUN COPY myTool /home/coder/myTool
+
+# Install NodeJS
 RUN sudo curl -fsSL https://deb.nodesource.com/setup_15.x | sudo bash -
 RUN sudo apt-get install -y nodejs
 
-
-#pymodules
-RUN sudo apt-get install python3-pip 
-RUN sudo dnf install python3-tkinter
-
-
+# Install pymodules
+RUN sudo apt-get install python3-pip -y 
+RUN sudo apt-get install python-tk -y
+RUN sudo apt install python3-numpy -y
+RUN sudo apt-get install python3-matplotlib -y
 
 # Install a VS Code extension:
 # Note: we use a different marketplace than VS Code. See https://github.com/cdr/code-server/blob/main/docs/FAQ.md#differences-compared-to-vs-code
